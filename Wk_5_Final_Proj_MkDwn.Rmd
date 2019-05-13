@@ -1,0 +1,249 @@
+---
+title: "It's a Question of Happiness"
+author: "Eric Stewart"
+date: "5/12/2019"
+output:
+html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+
+
+
+## Setup
+
+### Load packages
+
+```{r load_packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+library(statsr)
+library(tidyverse)
+```
+
+### Load data
+
+
+
+```{r load_data}
+load("brfss2013.RData")
+```
+
+
+
+* * *
+
+## Part 1: Data
+
+From the [Center of Disease Control’s] (https://www.cdc.gov/brfss/about/index.htm) website, *“The Behavioral Risk Factor Surveillance System (BRFSS) is the United States' premier system of health-related telephone surveys that collect state data about U.S. residents regarding their health-related risk behaviors, chronic health conditions, and use of preventive services. Established in 1984 with 15 states, BRFSS now collects data in all 50 states as well as the District of Columbia and three U.S. territories. BRFSS completes more than 400,000 adult interviews each year, making it the largest continuously conducted health survey system in the world”.*
+
+The current data set, consisting of 330 variables and over 491,000 observations relating to personal well-being was collected by both cellphone and land-line interviews in 2013.  Participants were limited to adults living in private residences or college housing.  
+
+In reviewing the data, while there may be instances of apparent causality, I will not not attempt to prove correlation as it outside the scope of this class. 
+
+Furthermore, I have concerns about potential biases.  Foremost is that the data is only representative of adults living in private residences with access to telephones.  This leaves out entire swaths of the population where neither nor both conditions are true Arguably it is this exact population that may be the most “well-being challenged”.  Another potential bias is that child information provided by what might or might not be a custodial adult may be "colored" in the respondant's attempt to avoid critisim by the interviewer.
+
+
+* * *
+
+## Part 2: Research Questions
+
+**Question 1:** Is it possible to decern levels of happiness from the data set?  
+**Discussion:** While there is no variable that directly inquires about the respondent’s overall level of happiness, there is one variable, *$lsatisfy*, that askes the question, “How satisfied are you with your life?  Can we use this as a proxy for happiness, and if so what does that data tell us? 
+
+**Quesion 2:**  Are there variables that indicate unhappiness, and if so can we use them as inverse proxies to happiness?  
+**Discussion:**  There are several variables that may indicate levels of unhappiness, for example *$qlmentl2* or *$misdeprd* that oddly enough both as ask the same question, "How many days depressed in the past 30 days"?  What does this data look like and what can we learn?
+
+**Question 3:** Are certain measured demographics more happy than others?  
+**Discussion:** Once we ascertain who may be happy, what does that look like when we sort selected demographics against that variable.  Are women happier than men? Do people that live in southern climates tend to be happier? The possibilities are endlessly interesting.
+
+
+* * *
+
+## Part 3: Exploratory Data Analysis
+
+NOTE: Insert code chunks as needed by clicking on the "Insert a new code chunk" 
+button (green button with orange arrow) above. Make sure that your code is visible
+in the project you submit. Delete this note when before you submit your work.
+
+**Research quesion 1:**
+
+Isolate $lsatisfy into a new data frame (tibble), clean if needed using dplyr
+
+```{r create_lev_satisfy, results='hide'}
+  #  Create a tibble data frame from brfss2013$lsatisfy with one variable named lev_satisfy 
+lev_satisfy <- brfss2013[, c("lsatisfy")]
+    ```
+    
+We have a tibble with 491775 obs. of 1 variable. 
+
+```{r data_summary}
+summary(lev_satisfy)
+
+```
+
+ 
+
+```{r initial_plot}
+
+lev_satisfy_count <- as.data.frame(table(brfss2013$lsatisfy))
+
+
+names(lev_satisfy_count)[1] <- paste("Level of Satisfaction")
+  names(lev_satisfy_count)[2] <- paste("Frequency")
+
+ggplot(lev_satisfy_count) +
+  geom_col(aes(x = lev_satisfy_count$`Level of Satisfaction`, y = Frequency)) +
+  xlab("Level of Satisfaction") +
+  ylab("Count") 
+
+
+```
+
+  
+How many NAs and Not_NAs are there in the $lsatisfy variable?
+
+```{r count_satisfy_NAs}
+sum(is.na(lev_satisfy))
+```
+
+```{r count_Not_NA}
+
+  # sum total responses (!is.na) in lev_satisfy and find percentage of observations
+    ## that responded to the question.
+
+x <- sum(!is.na(lev_satisfy)) 
+
+resp_sat_percent <- x / (nrow(lev_satisfy))
+
+```
+
+Out of 491,775 observatuions in $lsatisfy, 480,104 are NA. Only 11,671 have responded to the question of "How satisfied are you with your life"?   Only a 2.4% response rate.  
+
+Without understanding why there are so many NAs, we can only use the responding 11,671 as a population sample.  Therefor:
+
+$P (Very Satisfied) = .4620$  
+$P (Satisfied) = .4727$   
+$P (Disatisfied) = .0513$   
+$P (Very Disatisfied) = .0137$   
+
+Conclusion: Given the the sample set of 11,671 observatiuons,  we will use $lsatisy as an indicator of overall hapiness. 
+
+
+**Research quesion 2:**
+
+Let's choose three variables that may be useful proxies for unhappiness:
+
+1.  $qlmentl2 "How many days depressed in the past 30 days?
+2.  $misdepard "How often feel depressed in past 30 days?
+3.  $misnwork "Emotional Problem Kept You From Doing Work Past 30 Days?
+
+Make a data frame named level_unhappy consisting of these three variables
+
+```{r create_level_unhappy, results='hide'}
+level_unhappy <- brfss2013[, c("qlmentl2", "misdeprd", "misnowrk")]
+    
+```
+
+    
+Rename the colums to "days_dep", "often_dep" aand "miss_work" to make it a bit more intuitive, and see what the structure looks like.
+
+```{r rename_and_examine}
+names(level_unhappy) <- c("days_dep", "often_dep", "miss_work")
+
+str(level_unhappy)
+```
+
+
+```{r count_unhappy_NAs}
+
+na_days_dep <- sum(!is.na(level_unhappy$days_dep))
+na_often_dep <- sum(!is.na(level_unhappy$often_dep))
+na_miss_work <- sum(!is.na(level_unhappy$miss_work))
+
+```
+
+
+Again, there seems to be a lot of NAs in this database.  What is the percentage of responses in the data frame, level_unhappy?
+
+```{r precent_NA_level_unhappy}
+
+  # sum total responses (!is.na) in level_unhappy and find percentage of observations
+    ## that responded to the questions. 
+
+resp_unhap_percent <- c(na_days_dep + na_often_dep + na_miss_work) / (nrow(level_unhappy) * 3)
+
+
+```
+
+Only 4.9% of participants responded to any of the three questions being used as proxies for unhappiness.
+This is similar to the 2.4% responding to the question regarding their level of satisfation with their life.
+
+Finally, how many respondants indicated that they were both either Very Satisfied or Satisfied with the lives, and also indicated a positive response to any of the three unhappiness proxy questions?
+
+Start with joining (cbind) the two data frames, lev_satisfied and level_unhappy. both with 491,775 observations into a single dataframe, join_happiness.
+
+```{r join_dataframes}
+join_happiness <- cbind(lev_satisfy, level_unhappy)
+  
+```
+
+Look at the data set and see which rows have common respones. (dplyr) filter() will drop NAs and return only respones.
+
+```{r common_responses}
+
+  # How many people were Very Satisfied OR Satisfied AND reported that they were depressed more than 5 days out of the past thirty
+temp1 <- filter(join_happiness, (lev_satisfy == "Very satisfied" | lev_satisfy == "Satisfied") &
+  (level_unhappy$days_dep >= 5))
+
+  #  Very satisfied with life but reported still being  depressed druing past thirty days
+
+ temp2 <- filter(join_happiness, (lev_satisfy == "Very satisfied") &
+  (level_unhappy$often_dep != "None"))
+ 
+  # percentage of people being Very Satisfied AND depressed out of total level_unhappy population
+ 
+ 155 / nrow(level_unhappy)
+ 
+ 
+ temp3 <- filter(join_happiness, (lev_satisfy == "Very dissatisfied") &
+  (level_unhappy$often_dep != "None"))
+ 
+ # Very dissatisfied and depressed 10 or more days a month
+ temp3 <- filter(join_happiness, (lev_satisfy == "Very dissatisfied") &
+   (level_unhappy$days_dep >= 10))
+
+```
+
+Here are some interesting outcomes:  
+
+*  There are 88 participants that were either Very Satisfied or Satisfied with thier lives AND were depressed more than 5 days in a month.   
+*  155 participants, 0.03%  of level_unhappy respondants stated that they were Very Satisfied with their lives AND have experienced some depression in the past 30 days.  
+*  4 people are Very Dissatisfied and have beed depressed 10 or more days
+
+Table shows the four most "unhappy" participants
+
+```{r  most_unhappy}
+ temp3
+
+```
+
+
+
+
+
+**Research quesion 3:**
+
+
+
+```{r}
+
+
+
+
+
+```
+
