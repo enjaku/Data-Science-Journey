@@ -1,4 +1,4 @@
-###Week 1
+### Week 1
 
 These are notes of the first week of Inferential Statistics.  I'm utting them in a markdown document and loading up to GitHub as an experient in workflow.
 
