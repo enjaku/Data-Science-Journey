@@ -63,7 +63,7 @@ If you want to find the exact cut off off for a 95% confidence level...
 
 Required Sample Size for a given Margin of Error (ME).  We're going to work backwards now.
 
-    -
+    -Check up loading
 
 
 
