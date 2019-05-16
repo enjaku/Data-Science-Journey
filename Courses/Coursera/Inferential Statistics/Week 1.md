@@ -10,6 +10,8 @@ Let the fun begin.
     + Standard Deviation of the Sample Means (SampLING Distribution) is called the **Standard Error$**.  **sd of x(bar) = (SE)**
     + As n increses the Standard Error will decrease.
 
+**Standard Error  = s / sqrt n**
+
 While individial populations are "very variable", it is unlikey that sample means will be "very variable".  The histogram of the sampLING distribtion is a lot skinnier than the population histogram.
 
 The higher the sample size that we take from the population, the less variable the means of the samples, e.g. they get tall and very skinny.
@@ -63,7 +65,24 @@ If you want to find the exact cut off off for a 95% confidence level...
 
 Required Sample Size for a given Margin of Error (ME).  We're going to work backwards now.
 
-Checking UpLoad of File.
+ME = z^*  x  s/sqrt of n
+
+if you wanted to know what n was you rearrange:
+
+n = (z^* x s / ME)^2
+
+What does a 95% confidence level mean?
+    "95% of randon samples of the population will yield confdence intervals that capture the true population mean."
+
+As the confidence level increases, so does the width of the confidence interval.
+
+A *point estimate* of a population parameter is a single value used to estimate the population parameter. For example, the sample mean x is a point estimate of the population mean μ.
+
+
+
+
+
+
 
 
 
