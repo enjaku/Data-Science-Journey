@@ -10,12 +10,11 @@ Hypothesis are aways about the **population parameters** and not about the sampl
 **p-value:**    
 The probabliity (P) of more exreame outcomes given that ![formula](http://latex.codecogs.com/gif.latex?H_%7B0%7D "H\_{0}") is true.
 
+The smaller the p-value the stronger the evidence AGAINST the Null Hypothesis.
+
 **Standard Error(SE):**  
 Is the standard deviation of the samplying distributions of the mean. 
 ![formula](http://latex.codecogs.com/gif.latex?SE%20%3D%20%5Cfrac%7Bs%7D%20%7B%5Csqrt%7Bn%7D%7D "SE = \\frac{s} {\\sqrt{n}}")   
-
-
-
 
 **Z score**   
 "The number of standard deviations an observation falls above or below the mean"
@@ -57,6 +56,66 @@ The P-value on the lower tail is the same as the upper tail.  Make sure that you
 5. Make a decision and interpret in context of research question.
      - "If the P-value is low, the Null must go"
      -  "If the P is high, the Null must fly"
+
+##Confidence Intervals for Nearly Normal Point Estimates
+Point Estimate is a single value given as an estimate of a parameter of a population.
+
+![formula](http://latex.codecogs.com/gif.latex?Point%20Estimate%20%5Cpm%20%7Bx%5E%2A%7D%20%5Ctimes%20SE "Point Estimate \\pm {x^\*} \\times SE")    
+
+In other words, +/- the "Margin of Error" where the Margin of Error is ![formula](http://latex.codecogs.com/gif.latex?%7Bx%5E%2A%7D%20%5Ctimes%20SE "{x^\*} \\times SE")
+
+There are several usable Point Estimates:
+Sample Mean ![formula](http://latex.codecogs.com/gif.latex?%5Cbar%7Bx%7D "\\bar{x}")
+Sample Proportion:  ![formula](http://latex.codecogs.com/gif.latex?%5Chat%7Bp%7D "\\hat{p}")   
+**Note**  A 95% confidence interval equates to a critical value of **1.96**.  She sort of glosses over that.
+
+Hypothesis Testing with Various Point Estimates
+
+![formula](http://latex.codecogs.com/gif.latex?Z%20%3D%20%5Cfrac%7Bpoint%20estimate%20-%20null%20value%7D%20%7BSE%7D "Z = \\frac{point estimate - null value} {SE}")
+
+##Decision Errors##
+
+Type 1 Error: Rejecting the Null when the Null is actually true.   
+Type 2 Error: Failing to reject the Null when the Alternative is true.   
+
+Out of the two, a Type 1 error is worse, e.g. declaring guilty when actually innocent.   
+
+As a general rule we reject the Null when the p-value is < 0.05 ![formula](http://latex.codecogs.com/gif.latex?%28%5Calpha%20%3D%20.05%29%20 "(\\alpha = .05) ").   Remember, "When the P is low, the Null must go".   
+
+When using a 5% significance level there is a 5% chance of making a Type 1 error.  ![formula](http://latex.codecogs.com/gif.latex?P%28Type%201%20error%20%7C%20%7BH_0%7D%20true%29%20%3D%20%5Calpha "P(Type 1 error | {H\_0} true) = \\alpha").    
+
+This is why we use small levels of alpha.  
+
+**Decreasing** alpha will decrease Type 1 errors  
+**Increasing alpha** will decrease the Type 2 errors
+
+Probability of a Type 1 error = ![formula](http://latex.codecogs.com/gif.latex?%5Calpha "\\alpha")
+
+Probability of a Type 2 error = ![formula](http://latex.codecogs.com/gif.latex?%5Cbeta "\\beta")
+
+The **Power** of the test is ![formula](http://latex.codecogs.com/gif.latex?1%20-%20%5Cbeta "1 - \\beta").
+
+Beta depends of **effect size** ![formula](http://latex.codecogs.com/gif.latex?%28%5Cdelta%29 "(\\delta)") the difference between the point estimate and the null value.
+
+
+##Significance v. Confidence Levels##
+
+**Two-Sided Tests**
+Significance is normally .05 and talks about the extreames of the tails.   
+A Confidence Level is 95% and talks to the middle area of the curve.   
+Significance Level and Confidence Level are **Complementary**  
+
+**One-Sided Tests**
+Significance is .05 at one end of the test.
+Confidence Level is now 90% because we "ghost" the other 5% at the opposite end of the curve.  ![formula](http://latex.codecogs.com/gif.latex?CL%20%3D%201%20-%20%282%5Ctimes%20%5Calpha%29 "CL = 1 - (2\\times \\alpha)")
+
+Moral of the Story:  If your Confidence Interval includes the Null value, DON'T Reject it, and vice versa.
+
+Real differences between the point estimate and the null value are easier to detect with larger samples.
+
+
+
+
 
 
 
