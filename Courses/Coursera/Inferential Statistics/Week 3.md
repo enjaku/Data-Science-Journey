@@ -91,6 +91,42 @@ The R code is: (1 - **pt**(2.24, df = 21)) * 2
 
 This yields a P of .04.  We have a 95% confidence interval, so "If the P is low, the Null must go"... We reject the Null Hypothosis.
 
+##Inference for Comparing Two Paired Means
+
+When two sets of observations are not independent, they are said to be "paired".  
+
+diff = read - write:  create a new variable called "diff". 
+To find the average of all the diffs: ![formula](http://latex.codecogs.com/gif.latex?%7B%5Cmu_d_i_f_f%7D "{\\mu\_d\_i\_f\_f}")
+
+Since we don't have access to entire population we can use the sample statistic ![formula](http://latex.codecogs.com/gif.latex?%7B%5Cbar%7Bx%7D_d_i_f_f%7D "{\\bar{x}\_d\_i\_f\_f}")
+
+Set hypothesis: Ho is mu(diff) = 0
+                Ha is mu(diff) != 0
+
+Run it per normal.
+df = smallest n - 1   
+
+T = standard t-score calculation
+        ![formula](http://latex.codecogs.com/gif.latex?T%20%3D%20%5Cfrac%7BObserved%20-%20Null%7D%7BSE%7D "T = \\frac{Observed - Null}{SE}")
+
+![formula](http://latex.codecogs.com/gif.latex?SE%20%3D%20%5Cfrac%20%7Bs%7D%20%7B%5Csqrt%7Bn%7D%7D "SE = \\frac {s} {\\sqrt{n}}")
+
+Making decisions based on the p-value is simple. Compare the p-value to the significance level and if it's lower, reject the null hypothesis, and conclude that the data provide convincing evidence for the alternative hypothesis.
+
+##Power
+Find the appropriate sample size that we can be 80% sure that we would detect any practically important effects of the drug.
+
+The probability of rejecting H0 | H0 is false.
+
+The probability of **not** making a Type 2 error
+
+If you increase alpha (level of significance) you increase the Power, but also the Probability of a Type 1 error. 
+
+Increasing sample size decreases overlap of curves and increases power "The probability of **not** making a Type 2 error."
+
+
+
+
 
 
 
