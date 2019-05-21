@@ -40,3 +40,109 @@ _NoSQL (Not Only SQL) Model_
     - Key_Value_Stores (Redis, Couchbase Server)
     - Cache Systems (Redis, Memcache)
     - Graph Databaes (Neo4J)
+
+Operational DB v. Transactional DB   
+
+Operational (Easy, logical, intuitive)
+Transactional (Operational, hard to access and manipulate)
+
+Building Blocks for Relational DB:
+1.  Entities (Person, Place, Thing or Event - Unique and distinguishable   
+2.  Attributes (Characteristics of the entity)   
+3.  Cardinality - Relationship (describes the association amoung entities)
+        - one to one
+        - one to many
+        - many to many   
+    
+**ER (Entity Relationship) Diagrams**:  visually shows links and processes between tables
+
+**Primary Key**: A column or set of columns who's values uniquely identify each row in a table.
+**Foriegn Keys**:  One or more colums that can be used together to identifyeach row in a table.  
+
+**ER Diagram Notation:**
+Chen:  1:M, M:N, 1:1 
+Crows Foot:  Train Tracks  = 1, Crow's Foot = Many
+UML Class Diagram Notation: 1.1 = 1, 1.* = Many 
+
+##Retrieving Data with SELECT Statement   
+SELECT what you want FROM where you want it.
+
+SELECT * "give me everything"  
+FROM tutrial.city_population 
+LIMIT 10;   
+
+##Creating Tables
+
+CREATE TABLE Name of Table    
+(
+id          char(10)        PRIMARY KEY,   
+color       char(10)        NOT NULL,   
+size        char(5)         NOT NULL,   
+price       decimal (8,2)   NOT NULL,   
+desc        Varchar (750)   NULL   
+)
+
+You get the idea...
+
+NULL values mean there is nothing there.  Empty strings still have a value, so they are not the same.   
+PRIMARY KEYS cannot have NULL values.   
+Every column needs a NULL defined.   
+
+How do you get data into the table that you created?   
+INSERT INTO Name of table    
+VALUES ('1152'      
+        ,'red'     
+        ,'big'        
+        ,'2.50'     
+        ,NULL        
+         );       
+ Sublime HATES tables. 
+
+##Creating Temporary Tables
+
+Temp tables will be deleted when current session is terminated
+
+CREATE TEMPORARY TABLE Name  AS 
+(     
+SELECT *    
+FROM     
+WHERE     
+)
+
+##Adding Comments
+Remember WHAT you were doing and WHY   
+Mute or commenting out   
+Single Line:  --  Removes the entire line
+Section: /*           /*
+
+
+**SQLite Notes:**
+1.  Open Terminal
+2.  LS to see the dirs.
+3.  CD to SQLite
+4.  Enter sqlite3 to get the prompt
+5.  .tables to see what's available.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
