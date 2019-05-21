@@ -237,6 +237,29 @@ Remember to multiply by 2x because its a Hypothosis test and we need to account 
 
 Also remember we're using the Bonferrioni corrected alpha, which is smaller.  
 
+##Bootstrapping
+
+Step 1.   Take a bootstrap sample, a random sample taken **with replacement** from the original sample, and the same size as the original sample.   
+
+Step 2. Calculate the bootstrap statistic: whatever statistic you're intersted in, e.g., mean, median, proportion, etc.    
+
+Step 3.  Repeat Steps 1 and 2 many times in order to create the bootstrap distribution.  In other words,  you end up with a distribution of means or a distribution of medians... whatever you werr interested in.
+
+We can calculate a Confidence Interval in two ways:
+1.  The Percentile Method:  Estimate the 95% by taking the middle, e.g. excluding the 2.5th and 97.5th (the ends)
+2.  Standard Error Method:
+     Sample Median +/- T^* x SE of bootstrap distribution
+        *(the SE of the bootstrap is generally given)*
+
+**Bootstrap Limitations:**   
+    -If the bootstrap distribution is extremely skewed or sparse, the bootstrap interval might be quite unreliable.     
+    -Need a good representative sample from the population.
+
+
+
+
+
+
 
 
 
