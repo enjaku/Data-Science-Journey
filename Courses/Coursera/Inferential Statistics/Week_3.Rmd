@@ -70,6 +70,8 @@ variable         | description
 <li> The births </li>
 </ol>
 
+**Answer: 4 - Births**
+
 As a first step in the analysis, we should take a look at the variables in the dataset. 
 This can be done using the `str` command:
 
@@ -101,6 +103,8 @@ summary(nc$gained)
 <li> 31 </li>
 </ol>
 
+**Answer: #3 - There are 27 NA's in the 1,000 observations**
+
 Next, consider the possible relationship between a mother's smoking habit and the 
 weight of her baby. Plotting the data is a useful first step because it helps 
 us quickly visualize trends, identify strong associations, and develop research
@@ -116,7 +120,7 @@ false about the relationship between habit and weight?
 </ol>
 ```{r habit-weight-box}
 # type your code for the Question 3 here, and Knit
-
+boxplot(weight~habit, data = nc)
 ```
 
 The box plots show how the medians of the two distributions compare, but we can
@@ -124,11 +128,15 @@ also compare the means of the distributions using the following to
 first group the data by the `habit` variable, and then calculate the mean
 `weight` in these groups using the `mean` function.
 
-```{r by-means}
+```{r  group_sizes}
 nc %>%
-  group_by(habit) %>%
-  summarise(mean_weight = mean(weight))
-```
+   group_by(habit) %>%
+   summarise (n())
+
+
+````
+
+
 
 There is an observed difference, but is this difference statistically 
 significant? In order to answer this question we will conduct a hypothesis 
@@ -141,6 +149,7 @@ test.
 **Exercise**: Are all conditions necessary for inference satisfied? Comment on each. You can compute the group sizes using the same `by` command above but replacing `mean(weight)` with `n()`.
 </div>
 
+
 4.  What are the hypotheses for testing if the average weights of babies born to 
 smoking and non-smoking mothers are different?
 <ol>
@@ -150,6 +159,10 @@ smoking and non-smoking mothers are different?
 <li> $H_0: \bar{x}_{smoking} = \bar{x}_{non-smoking}$; $H_A: \bar{x}_{smoking} > \bar{x}_{non-smoking}$ </li>
 <li> $H_0: \mu_{smoking} \ne \mu_{non-smoking}$;  $H_A: \mu_{smoking} = \mu_{non-smoking}$ </li>
 </ol>
+
+**Answer: $H_0: \mu_{smoking} = \mu_{non-smoking}$; $H_A: \mu_{smoking} \ne \mu_{non-smoking}$**
+
+
 
 Next, we introduce a new function, `inference`, that we will use for conducting
 hypothesis tests and constructing confidence intervals. 
@@ -179,6 +192,8 @@ For more information on the inference function see the help file with `?inferenc
 
 <div id="exercise">
 **Exercise**: What is the conclusion of the hypothesis test?
+**Answer:  The p-value is .0199, so we would reject the $H_0$ in favor of $H_A$**. *"If the "p" is low, the Null mist go"*.
+
 </div>
 
 5.  Change the `type` argument to `"ci"` to construct and record a confidence 
@@ -196,7 +211,8 @@ between 0 and 1. Also note that when doing a confidence interval arguments like
 </ol>
 ```{r habit-weight-ci}
 # type your code for the Question 5 here, and Knit
-
+# By default we get a confidence interval of 95%, but I added it in for GP.
+inference(y = weight, x = habit, data = nc, statistic = "mean", type = "ci", method = "theoretical", conf_level = 0.95)
 ```
 
 By default the function reports an interval for ($\mu_{nonsmoker} - \mu_{smoker}$)
@@ -221,7 +237,13 @@ interval?
 ```{r weeks-ci-99}
 # type your code for Question 6 here, and Knit
 
+inference(y = weeks, data = nc, statistic = "mean", type = "ci", 
+          method = "theoretical", conf_level = 0.99)
+
 ```
+**ANSWER: #4 (38.0952 , 38.5742)**
+
+
 
 <div id="exercise">
 **Exercise**: Calculate a new confidence interval for the same parameter at the 90% confidence level. Comment on the width of this interval versus the one obtained in the the previous exercise.
@@ -229,13 +251,33 @@ interval?
 ```{r weeks-ci-90}
 # type your code for the Exercise here, and Knit
 
+inference(y = weeks, data = nc, statistic = "mean", type = "ci", 
+          method = "theoretical", conf_level = 0.90)
+
 ```
+**ANSWER: Comment - with a 90% confidence interval the interval is narrower, which makes sense as we're saying that we are less confident that the true mean falls within this even narrower band.** 
+
 
 <div id="exercise">
 **Exercise**: Conduct a hypothesis test evaluating whether the average weight gained by younger mothers is different than the average weight gained by mature mothers.
 </div>
+
+$H_0: \mu_{younger.mom} = \mu_{mature.mom}$; $H_A: \mu_{younger.mom} \ne \mu_{mature.mom}$
+
+
 ```{r gained-mature-ht}
 # type your code for the Exercise here, and Knit
+
+# Group by "mature" to look at the sample sizes
+
+nc %>%
+   group_by(mature) %>%
+   summarise (n())
+
+# Conduct a hypothesis test
+
+inference(y = weight, x = mature, data = nc, statistic = "mean", type = "ht", null = 0, 
+          alternative = "twosided", method = "theoretical")
 
 ```
 
@@ -244,7 +286,20 @@ mothers. Use a method of your choice, and explain how your method works.
 ```{r cutoff-mature}
 # type your code for Question 7 here, and Knit
 
+
+by_age <- nc %>% group_by(mature)
+by_age %>% arrange(desc(mage))
+
+## This was a bit hard.  I need to think through these a little more before I start coding.
+## Take data (nc) and group it by the variable "mature and pass it into a new table "by_age
+
+#"%>% arrange by desc "mage".  Scroll down the table and find the cut-off.
+
+# Also, know what the variables are.  "fage is NOT female age, its fathers age.
+
 ```
+**Answer:  The cut-off is 34-35 years old, which seems steep.**
+
 
 <div id="exercise">
 **Exercise**: Pick a pair of variables: one numerical (response) and one categorical 
@@ -258,10 +313,43 @@ and analyzing the data to answer this question is basically what you'll need to 
 your project as well.)
 </div>
 
+**EXERCISE: Are younger mothers (<35yrs old) likely to have more smaller babies?
+$H_0: \mu_{younger.mothers} = \mu_{older.mothers}$;
+$H_A: \mu_{younger.mothers} \ne \mu_{older.mothers}$
+
+
+
+
 ```{r pick-your-own}
 # type your code for the Exercise here, and Knit
 
+# Group by mature, i.e., younger and older mothers.
+
+nc %>%
+   group_by(mature) %>%
+   summarise (n())
+
 ```
+
+```{r boxplot of data}
+
+#  Lets look at the data in a box plot
+
+boxplot(weight~mature, data = nc)
+  #  Not a lot there.  The IQR of mature moms is a bit bigger.
+
+```
+
+```{r  run the hypothesis test}
+inference(y = weight, x = mature, data = nc, statistic = "mean", type = "ht", null = 0, 
+          alternative = "twosided", method = "theoretical")
+
+
+
+```
+
+**Exercise:  At a 95% confidence level there is no difference between a baby's birth weight born to a younger or mature mother.  We cannot reject teh null hypthesis. 
+
 
 
 <div id="license">
