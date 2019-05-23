@@ -54,7 +54,24 @@ Sorts data by particular column(s).  Add comma between colummns.
 Must be the last clause in the SELECT statement.  
 DESC or ASC
 
-  
+**Math Operations**
+
+SELECT   
+ProductId     
+,UnitsOnOrder     
+,UnitPrice     
+,UnitsOnOrder * UnitPrice AS Total_Order_Cost   
+FROM Products;
+
+Order of Operations    
+- paraenthesis
+- Exponents
+- Multiplication
+- Division
+- Addition
+- Subtraction
+
+
 
 
 
