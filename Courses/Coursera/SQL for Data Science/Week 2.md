@@ -1,4 +1,4 @@
-**Week2**
+#Week2  SQL
 
 
 Getting onto sqlite is a challenge.  I feel that the instructor is using one .db and I'm practicing on another, which isn't neccessarily bad.
@@ -111,6 +111,15 @@ WWHERE does not work for groups, because it filters on rows. Therefore, we have 
 WHERE filters **before** the data is grouped and then HAVING filters **after** the data is grouped.
 
 Good practice to use ORDER BY with GROUP BY because GROUP BY does not order the data in any fashion.  It just groups it.
+
+**Order of Statements**
+SELECT   
+FROM   
+WHERE   
+GROUP BY   
+HAVING    
+ORDER BY   
+
 
 
 
