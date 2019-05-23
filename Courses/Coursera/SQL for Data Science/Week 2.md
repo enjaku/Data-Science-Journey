@@ -70,8 +70,47 @@ Order of Operations
 - Division
 - Addition
 - Subtraction
+**Aggregte Functions**
+- AVG()
+- COUNT()
+- MIN()
+- MAX()
+- SUM()
+SELECT COUNT(CustomerID) AS     
+    total_customers
+    FROM Customers
 
+Can use Function (*) if you want to iterate over everything, i.e.,
 
+SELECT COUNT (*) AS
+total_customers
+    FROM Customers
+
+Returns total rows in the column Customers.
+Ignores NULL values.
+
+**Min and Max**
+SELECT MAX(UnitPrice) AS max_prod_price
+FROM Products;    
+
+NULL Values ignored 
+
+DISTINCT()
+  Cannot use DISTINCT on COUNT with (*)    
+
+**Grouping Data with SQL**
+
+GROUP BY 
+ SELECT Region
+ , COUNT(CustomerID) AS total_customers
+    FROM Customers
+    GROUP BY Region
+
+WWHERE does not work for groups, because it filters on rows. Therefore, we have to use the HAVING clause when filtering with an aggregate function in grouping them.
+
+WHERE filters **before** the data is grouped and then HAVING filters **after** the data is grouped.
+
+Good practice to use ORDER BY with GROUP BY because GROUP BY does not order the data in any fashion.  It just groups it.
 
 
 
