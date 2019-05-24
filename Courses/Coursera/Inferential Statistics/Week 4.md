@@ -131,7 +131,63 @@ One final thought on calculating sample size to desired Margin of Error:
     It's a critical value times the standard error. If there is a previous study that we can rely on for the value of p-hat in this formula, we would use that in calculation of the required sample size.
     **If not, then we're going to use 0.5 for our p-hat**. _We'll see this again_  Yup, it JUST did!!
 
-    
+##Hypothessis Testing of a Proportion:
+
+From a YouTube Video -
+1. State the Null Hypothessis.  Alt Hypothessis can be !=, < or >.    
+2.  Calculate point estimate p(hat)
+3.  Check conditions: independence (< 10% of population **without replacement**
+    np>=10 AND n(1-p)>=10   **Note: p NOT p(hat)**
+Choose the Level of Significance:  Normally between 0.05 and 0.01.  
+4.  Draw samplying distribution and draw curve.   
+3. Find critical values: A Z value or a T value that seperate the taisl(s) from the rest of the curve.  How do you know???
+    -With proportions we use a **Z Value** for large enoght sample size.
+    - p(portion of the population) x n (sample size) > 5  also (1-p)n >5.  
+4. Find the test statistic:  Z = (p(hat) - p) / SE where:
+                SE sqrt {p(1-p) \ n}
+
+5. Find p-value < Significance Level (alpha) reject the Null.  If thep is low, the Null must Go.
+
+
+When you use p(h) v. p:
+
+Success-Failure      
+        -Confidence interval:  p(h)     
+        -Hypothessis test: p    
+
+Standard Error:    
+        -Confidence interval:  p(h)     
+        - Hypothessis testing: p     
+
+##Exercise:
+
+ Pew Research poll found that 60% of 1,983 randomly sampled American adults believe in evolution. Does this provide convincing evidence that majority of Americans believe in evolution? And when say majority, what we mean is more than 50%.
+
+H0: p = .50 of americans believe in evelution
+HA: p > .50 of americans...
+
+Sample Proportion (p{h}) is 0.6    
+n = 1,983   
+
+conditions:  independence: gtg, skew: success and failures > 10: gtg
+
+**Since Success condition is met:  Assume nearly normal distribution.** 
+
+p{h} ~N (mean = 0.5)  SE = sqrt{(05 -05)} 1,983
+
+SE = .0112
+
+Calculate the test statistic (Z)   (.6 - .5) / .0112 (SE)
+
+Z = 8.982  
+p = the area under the cruve beyond 8.92 is going to be almost 0
+
+
+##Estimating the Difference Between Two Proportions:
+
+
+
+
 
 
 
