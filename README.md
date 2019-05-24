@@ -1,2 +1,2 @@
 # Data-Science-Journey
-This is a repository of the projects I worked on or currently working on.  The projects are either written in R (R markdown). The goal of the projects is to use data science/statistical modelling techniques to find something that is interesting. A typical project consist of finding and cleaning data, analysis, visualization and conclusion. Click on the projects to see full analysis and code.
+This is a repository of the projects and other work that is leading me to proficiency in data science. The documentation is written in some form of markdown and is accessable for review and comment. I add all of my class notes, comments and projects as I continue to press ahead in my data science journey. 
