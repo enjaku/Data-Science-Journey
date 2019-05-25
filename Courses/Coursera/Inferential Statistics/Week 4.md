@@ -185,6 +185,86 @@ p = the area under the cruve beyond 8.92 is going to be almost 0
 
 ##Estimating the Difference Between Two Proportions:
 
+calculating a confidence interval for the difference between the two population proportions ,that are unknown using data from our sample.    
+
+EXAMPLE:
+Parameter of interest is the difference between all Coursera students and all Americanswho believe there should be a ban on handguns:
+
+Parameter of Interest: Pcoursera - Pus  with P being Population Proportion   
+Sample Statistic (Point Estimate): p(hat)corsera - p(hat)us  
+
+Estmations are Confidence Intervals, and CIs are always:
+
+point estimate +- margin of error
+
+close enough:
+
+![formula](http://latex.codecogs.com/gif.latex?%28%5Chat%7Bp_1%7D%20-%20%5Chat%7Bp-2%7D%20%5Cpm%20z%5E%2A%20%7BSE_%7B%28/hat%7Bp_1%7D-/%7Bhat%7Bp_2%7D%29%7D "(\\hat{p\_1} - \\hat{p-2} \\pm z^\* {SE\_{(/hat{p\_1}-/{hat{p\_2})}")
+
+Standard Error    
+
+![formula](http://latex.codecogs.com/gif.latex?SE%20%3D%20%5Csqrt%5Cfrac%20%7Bp_1%20%281%20-%5Chat%7Bp_1%7D%29%7D%7Bn_1%7D%20%2B%20%5Cfrac%20%7Bp_2%20%281%20-%5Chat%7Bp_2%7D%29%7D%7Bn_2%7D "SE = \\sqrt\\frac {p\_1 (1 -\\hat{p\_1})}{n\_1} + \\frac {p\_2 (1 -\\hat{p\_2})}{n\_2}")
+
+
+we're adding the two Variability components here, and then **taking the square root of that, to go from variance, to standard deviation** or in other words, the standard error, which is basically the standard deviation of the sampling distribution.
+
+Conditions:    
+-withing groups independence    
+    random sampling/assignment    
+    if samplying **without replacement**, n<10% of population   
+-between groups: independent 
+
+Sample Size to **Ensure Normality** of sample:
+- each sample should meet success-failure conditions:
+    + n:p >= 10 and n(1-p) >= 10  **Both Samples**    
+
+The rest is pretty straight forward.  Z^* is going to be a Z score of 95% CI.
+If you have **successes** subtract from sample population to get **failures**
+
+Running the math:     
+Point Estimate += Margin of Error x SE         
+(0.71 - 0.25) +- 1.96 x 0.0516       
+0.46     +-  0.10       
+Therefore the **Overall Confidence Interval** is(0.36 , 0.56 )
+
+What this means is that we are 95% confident ,that the proportion of Coursera students who believe that their should be a ban on possession of handguns ,is 36 to 56% higher than the proportion of Americans who do.
+
+Does the order of observations matter?  No.    
+
+##Hypothessis Test for Comparing Two Proportaions  
+
+To calculate p(hat) = divide value of interest by total population.   
+
+**For One Propotion**   
+Confidence intervals: p(hat)     
+For hypothesis tests: P   
+
+**For Two Proportions:**
+Convidence Intervals use p(hat)   
+
+For hypothesis testing: **Pooled Proportion**  
+    ![formula](http://latex.codecogs.com/gif.latex?Pooled%20Proportions%20%3D%20%5Chat%7BP%7D%20%3D%20%5Cfrac%7Btotal%20successes%20in%20both%20groups%7D%7Btotal%20n%20from%20both%20groups%7D "Pooled Proportions = \\hat{P} = \\frac{total successes in both groups}{total n from both groups}")
+
+Conditions:
+  Success-Failure:    
+    n1P(ool) >= 10   
+    n1(1-P(ool)) >=10   
+
+n2P(ool) >=10   
+n2(1-P(ool)) >=10   
+
+**Continuity Notes:  I'm going sailing.  We left off at calculating the Standard Error using a _pooled value_ for P(hat)  We just need to know the formula for calculating the SE with the pooled value, aka P(hat)**
+
+
+
+
+
+
+
+
+
+ 
+
 
 
 
