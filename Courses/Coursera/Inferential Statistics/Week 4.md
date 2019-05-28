@@ -242,10 +242,12 @@ For hypothesis tests: P
 **For Two Proportions:**
 Convidence Intervals use p(hat)   
 
+ **Pooled Value**  In a hypothesis test, we must assume that the null hypothesis is true. And when we're doing a hypothesis test for comparing two proportions. Our null hypothesis states that the two proportions are equal to each other, so we're going to use this value of the pooled proportion to say this is the value they're equal to.
+
+
 For hypothesis testing: **Pooled Proportion**  
     ![formula](http://latex.codecogs.com/gif.latex?Pooled%20Proportions%20%3D%20%5Chat%7BP%7D%20%3D%20%5Cfrac%7Btotal%20successes%20in%20both%20groups%7D%7Btotal%20n%20from%20both%20groups%7D "Pooled Proportions = \\hat{P} = \\frac{total successes in both groups}{total n from both groups}")
 
-Conditions:
   Success-Failure:    
     n1P(ool) >= 10   
     n1(1-P(ool)) >=10   
@@ -254,6 +256,70 @@ n2P(ool) >=10
 n2(1-P(ool)) >=10   
 
 **Continuity Notes:  I'm going sailing.  We left off at calculating the Standard Error using a _pooled value_ for P(hat)  We just need to know the formula for calculating the SE with the pooled value, aka P(hat)**
+
+Success-Failure for hypothesis test:
+
+![formula](http://latex.codecogs.com/gif.latex?%7Bn_1%7D%5Chat%7B%7BP%7D_p_o_o_l%20%7D%5Cgeq%2010 "{n\_1}\\hat{{P}\_p\_o\_o\_l }\\geq 10")
+
+![formula](http://latex.codecogs.com/gif.latex?%7Bn_1%7D%281-%5Chat%7B%7BP%7D_p_o_o_l%20%7D%29%5Cgeq%2010 "{n\_1}(1-\\hat{{P}\_p\_o\_o\_l })\\geq 10")
+
+...and the same for n2..
+
+To calculate the standard error we plug in P(ooled) everyplace that we see a p(hat)1 or a p(hat)2  .
+
+![formula](http://latex.codecogs.com/gif.latex?SE%20%3D%20%5Csqrt%5Cfrac%20%7Bp_1%20%281%20-%5Chat%7Bp_1%7D%29%7D%7Bn_1%7D%20%2B%20%5Cfrac%20%7Bp_2%20%281%20-%5Chat%7Bp_2%7D%29%7D%7Bn_2%7D "SE = \\sqrt\\frac {p\_1 (1 -\\hat{p\_1})}{n\_1} + \\frac {p\_2 (1 -\\hat{p\_2})}{n\_2}")
+
+**12:28 in the HowTest for Comparing Two Proportions**
+
+We're looking at a two-tailed test at 0.12 at each end.   
+Calculate the Z-Score = (-0.12 - 0)/0.0619 (SE)     
+
+Z= -1.74  
+
+P=value the probablity of being below the Z of 01.74 AND abpve 1.74.     
+ = 0.08%
+
+ Significance level is 95%, so 0.08 is NOT LESS than 0.05, so we cannot reject the NUll that the proportions are the same.   
+
+ ##Small Sample Proportions
+
+ What if the S-F is NOT met?
+
+ Ho: p= 0.5    
+ Ha = p > 0.5   
+
+ n=8   
+ p(hat) = 1 (the outcome of guessing all 8 coin flips correctly)
+
+ Conditions for Inference:
+ Independence:  Givien a fair coin we can assume independence.    
+ Sample Size/Skew:  8 trials x 0.5 (Null value) = 4 **Not Met**    
+
+ The result is that we cannot assume the distribition is nearly normal, and we cannot use methods that rely on the CLT.    
+
+ **Enter "Simulation Based Inference"**     
+
+ 1.  Ultimate goal is to get a p-value.
+ 2.  P(observed or more extreame outcome \Ho is TRUE)
+ 3.  Devise a simulation scheme that assumes the Null H0 is TRUE     
+ 4.  Repeat the simulation many times and record sample statistic     
+ 5.  Calculate p-value as the proportion of simulatiomns that yiled a result favorable to the Null H0
+
+So P(hat)(sim) is a flip of a coin 8 times and record the proportion of HEADS at each iteration.    
+
+R for simulation:     
+
+Paul = factor(c(rep("yes", 8), rep("no", 0)), levels = c("yes", "no")
+
+inference(paul, est = "proportion", type = "ht", method = "simulation"     
+, success = "yes", null = 0.5, alternatiove = "greater")     
+
+function yields a p-value of 0.0037.     
+**The p-value is NOT the probablity of the alternative hypothesisbeing true**    
+
+
+
+
 
 
 
