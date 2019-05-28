@@ -316,6 +316,105 @@ inference(paul, est = "proportion", type = "ht", method = "simulation"
 
 function yields a p-value of 0.0037.     
 **The p-value is NOT the probablity of the alternative hypothesisbeing true**    
+**NOTE:  Look at documentation on the Inference() on R.**   
+
+##Comparing Two Small Sample Proportions:     
+HO:  P(back) - P(palm) = 0     
+HA:  P(back) - P(palm) != 0     
+
+Sample Size/Skew : We're going to need our "pooled proportion" for this.    
+  Looking at the data provided @ 2:40  we can use a pooled proportion of 0.75.   
+  12 samples x 0.75 = 9; so we can't say that the success-failure condition in met.    
+
+  ##Chi-Square Goodness Of Fit Test:##
+
+
+  We evaluate the distribution of one categorical variable (**One column of variables**) that has more than two levels.    
+
+1.  We want to quantify how different the observed counts are from the expected counts     
+2.  Large deviations between what is observed and expected would provide strong evidence for the Alt Hypothessis.  **AKA "Goodness of Fit Test**" 
+
+Conditions for Chi-Square:
+1. Independence
+     -random
+     -if samplying without replacement: n < 10% of population
+     - each case only contributes to one cell in the table     
+2. Sample Size
+    - Remember that a test statistic is:
+        + (point est - null value)/SE of point est. 
+
+What does a test statistic do?     
+1. It identifies the difference between a point estimate and and expected value assuming that the null hypothesis were true.     
+2. It standardizes that difference using the standard error of the point estimate.     
+
+When dealing with counts and how far they are from the expected count, we use a **Chi-Squared test statistic**.      
+
+![formula](http://latex.codecogs.com/gif.latex?x%5E2%20%3D%20%5Csum%20%5Cfrac%20%7B%28O-E%29%5E2%7D%20%7BE%7D "x^2 = \\sum \\frac {(O-E)^2} {E}")
+
+Where: O: Observed    
+        E: Estimated    
+        k = Number of cells  
+
+The X^2 distribution has only one parameter: degrees of freedom   
+For a goodness of fit test the df = k-1 where k is the number of cells.    
+
+**As the df increases it changes the center and spread of the X^2 distribruton:
+    - center moves to the right
+    - curve flatens and the spread is increased
+
+In the EXAMPLE (11:00 mins)  The X^2 statistic is 22.63   
+In order to find the p-value we need the df.  We have 5 cells so the df is (5-1) 4.   
+
+The p-value for a chi-square test is defined as the tail area above the calculated test statistic.  P-value ABOVE the observed test statistic.    
+
+How do we find the tail area?
+
+R >pchisqr(22.63, 4. lower.tail = FALSE)    
+**Note: look up pchisqr() documentation in R**
+
+p = 0.0002.
+
+With such a low p-value we reject the NUll Hypothessis.
+
+##Chi_Square Independence Test##
+
+Two categorical variables (**Two columns of variables**)at least one of which has more than two levels and we're evaluating the relationship between them.    
+
+ Large deviations from what would be expected based on sampling variation or chance alone provide strong evidence for the alternative hypothesis. **This is an Independence Test**     
+
+ The Chi-Square test statistic is calculated the same as a GOF test: 
+
+![formula](http://latex.codecogs.com/gif.latex?x%5E2%20%3D%20%5Csum%20%5Cfrac%20%7B%28O-E%29%5E2%7D%20%7BE%7D "x^2 = \\sum \\frac {(O-E)^2} {E}")     
+
+df = (R-1) x (C-1)     
+Where:     
+R: number of Rows     
+C: number of columns     
+
+Conditions are the same as GOF test.    
+
+How do you calculate the Expected Counts on a two-way table???    
+
+1.  Consider the OVERALL rate of success, i.e., what is the precentage of obese people in the sample.
+2.  Apply that overall rate of sucess to each one of our groups. 
+
+![formula](http://latex.codecogs.com/gif.latex?expected.count%20%3D%20%5Cfrac%7B%28row.total%29%20x%20%28column.total%29%7D%20%7Btable.total%7D "expected.count = \\frac{(row.total) x (column.total)} {table.total}")
+
+In EXAMPLE (8:40 mins) the X^2 = 31.68    
+df = 2 (see above)
+
+In R:  > pchisqr( 31.68, 2, lower.tail=FALSE)    
+
+ = 1.320613e-07    
+ **Get on top of this notation**
+
+ We would reject the HO
+
+    
+
+
+
+
 
 
 
