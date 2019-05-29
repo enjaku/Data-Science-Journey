@@ -40,6 +40,10 @@ Take a moment to review the report then address the following questions.
 <li> A poll conducted by WIN-Gallup International surveyed 51,927 people from 57 countries. </li>
 </ol>
 
+**ANSWER: A poll conducted by WIN-Gallup International surveyed 51,917 people from 57 countries.**
+
+
+
 2. Which of the following methods were used to gather information? 
 <ol>
 <li> Face to face </li> 
@@ -48,17 +52,25 @@ Take a moment to review the report then address the following questions.
 <li> All of the above </li>
 </ol>
 
+**ANSWER:  4. All of the above**
+
+
+
 3. True / False: In the first paragraph, several key findings are reported. These percentages appear to be **sample statistics**. 
 <ol>
 <li> True </li> 
 <li> False </li>
 </ol>
 
+**ANSWER TRUE - These appeare to be sample statistics**
+
 4. True / False:The title of the report is "Global Index of Religiosity and Atheism". To generalize the report's findings to the global human population, We must assume that the sample was a random sample from the entire population in order to be able to generalize the results to the global human population. This seems to be a reasonable assumption.
 <ol>
 <li> True </li> 
 <li> False </li>
 </ol>
+
+**ANSWER True - We can assume that the samples are random and can generalize the results**
 
 ### The data
 
@@ -75,12 +87,15 @@ data(atheism)
 <li> Religions </li>
 </ol>
 
+**ANSWER # 1 Countries**
+
 6. What does each row of `atheism` correspond to?
 <ol>
 <li> Countries </li> 
 <li> Individual Persons </li> 
 <li> Religions </li>
 </ol>
+**ANSWER: #2 Individual Responses**
 
 To investigate the link between these two ways of organizing this data, take a look at the estimated proportion of atheists in the United States. Towards the bottom of Table 6, we see that this is 5%. We should be able to come to the same number using the `atheism` data.
 
@@ -98,9 +113,14 @@ us12 <- atheism %>%
 <li> False </li>
 </ol>
 ```{r perc-atheist-us12}
-# type your code for Question 7 here, and Knit
+
+  x <- length(which(us12$response == "atheist"))
+    y <- nrow(us12)
+      x/y
 
 ```
+
+**ANSWER:  4.99% responses were Atheist.  Yes, it aggress with Table 6.**
 
 
 ## Inference on proportions
@@ -136,15 +156,52 @@ Although formal confidence intervals and hypothesis tests don't show up in the r
 ```{r me-perc-atheist-us12}
 # type your code for Question 8 here, and Knit
 
+1.96 * sqrt(.0499 * (1 - .0499)/1002)
+
+
 ```
+**ANSWER:  #3: The margin of error for the estimate of the proportion of atheists in the US in 2012 is 0.013.**
+
+
 
 <div id="exercise">
 **Exercise**: Using the inference function, calculate confidence intervals for the proportion of atheists in 2012 in two other countries of your choice, and report the associated margins of error. Be sure to note whether the conditions for inference are met. It may be helpful to create new data sets for each of the two countries first, and then use these data sets in the `inference` function to construct the confidence intervals.
 </div>
-```{r me-perc-atheist-other-countries}
+```{r japan-me-perc-atheist-other-countries}
 # type your code for the Exercise here, and Knit
 
+# Look at Japan
+jp12 <- atheism %>%
+  filter(nationality == "Japan" , atheism$year == "2012")
+
+#Look at the inference() for Japan
+inference(y = response, data = jp12, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+
+#Compute the ME
+1.96 * sqrt(.3069 * (1 - .3069)/1212)
+
 ```
+
+**ANSWER: Japan has a ME of .025**
+
+```{r canada-me-perc-atheist-other-countries}
+# Look at Japan
+Cda12 <- atheism %>%
+  filter(nationality == "Canada" , atheism$year == "2012")
+
+#Look at the inference() for Japan
+inference(y = response, data = Cda12, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+
+#Compute the ME
+1.96 * sqrt(.0898 * (1 - .0898)/1002)
+
+
+
+
+```
+**ANSWER: Canada has a ME of .017**
+
+
 
 ## How does the proportion affect the margin of error?
 
@@ -171,6 +228,8 @@ ggplot(d, aes(x = p, y = me)) +
 <li> The most conservative estimate when calculating a confidence interval occurs when $p$ is set to 1. </li>
 </ol>
 
+**ANSWER # 4 is FALSE: The most conservative estimate when calculating a confidence interval occurs when $p$ is set to 1.**
+
 The question of atheism was asked by WIN-Gallup International in a similar survey that was conducted in 2005. We assume here that sample sizes have remained the same. Table 4 on page 13 of the report summarizes survey results from 2005 and 2012 for 39 countries.
 
 Answer the following two questions using the `inference` function. As always, write out the hypotheses for any tests you conduct and outline the status of the conditions for inference.
@@ -180,10 +239,46 @@ Answer the following two questions using the `inference` function. As always, wr
 <li> True </li> 
 <li> False </li>
 </ol>
-```{r spain-05-12}
+```{r spain-2005}
 # type your code for Question 10 here, and Knit
 
+# H0: Spain has not seen a change in its Atheism Indext between 2005 and 2012
+# HA:  Spain has seen a change in its Atheism Index between 2005 and 2012
+
+# New Data Set for Spain 2005
+spain05 <- atheism %>%
+  filter(nationality == "Spain" , atheism$year == "2005")
+
+
+   inference(y = response, data = spain05, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+``` 
+
+```{r spain-2012}
+    
+# New Data Set for Spain 2012
+   
+  spain12 <- atheism %>%
+  filter(nationality == "Spain" , atheism$year == "2012")
+
+
+   inference(y = response, data = spain12, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+
 ```
+
+**ANSWER**
+Spain 2005:
+Summary Statistic: p_hat 0.1003; n = 1146
+Standard Error = 0.0089
+95% CI: (0.083 , 0.1177)
+
+Spain 2012
+Summary Statistic: n = 1145, p-hat = 0.09
+Standard Error = 0.0085
+95% CI: (0.0734 , 0.1065)
+
+**There is insufficient evidence to reject the Null Hypothesis of Spain has not seen a change in its Atheism Indext between 2005 and 2012**
+
+
 
 11. True / False: There is convincing evidence that the United States has seen a change in its atheism index between 2005 and 2012.
 <ol>
@@ -193,7 +288,32 @@ Answer the following two questions using the `inference` function. As always, wr
 ```{r us-05-12}
 # type your code for Question 11 here, and Knit
 
+us05 <- atheism %>%
+  filter(nationality == "United States" , atheism$year == "2005")
+
+
+   inference(y = response, data = us05, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+   
+   
+   us12 <- atheism %>%
+  filter(nationality == "United States" , atheism$year == "2012")
+
+
+   inference(y = response, data = us12, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
+
 ```
+
+Single categorical variable, success: atheist
+n = 1002, p-hat = 0.01
+95% CI: (0.0038 , 0.0161)
+
+Single categorical variable, success: atheist
+n = 1002, p-hat = 0.0499
+95% CI: (0.0364 , 0.0634)
+
+**ANSWER: False**
+
+
 
 
 12. If in fact there has been no change in the atheism index in the countries listed in Table 4, in how many of those countries would you expect to detect a change (at a significance level of 0.05) simply by chance? <br><br> *Hint:* Type 1 error.
@@ -206,7 +326,15 @@ Answer the following two questions using the `inference` function. As always, wr
 ```{r type1}
 # type your code for Question 12 here, and Knit
 
+39 * .05
+
 ```
+**ANSWER # 3:  1.95**
+
+
+
+
+
 
 13. Suppose you're hired by the local government to estimate the proportion of residents that attend a religious service on a weekly basis. According to the guidelines, the estimate must have a margin of error no greater than 1% with 95% confidence. You have no idea what to expect for $p$. How many people would you have to sample to ensure that you are within the guidelines? <br><br> *Hint:* Refer to your plot of the relationship between $p$ and margin of error. Do not use the data set to answer this question.
 <ol>
@@ -217,6 +345,14 @@ Answer the following two questions using the `inference` function. As always, wr
 </ol>
 ```{r sample-size}
 # type your code for Question 13 here, and Knit
+
+p <- 0.5
+z <- 1.96
+ME <- .01
+
+n <-  (p * (1-p) * z^2) / ME^2
+
+n
 
 ```
 
