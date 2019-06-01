@@ -13,33 +13,33 @@ Part 1: Yelp Dataset Profiling and Understanding
 
 1. Profile the data by finding the total number of records for each of the tables below:
 	
-i. Attribute table =
-ii. Business table =
-iii. Category table =
-iv. Checkin table =
-v. elite_years table =
-vi. friend table = 
-vii. hours table =
-viii. photo table = 
-ix. review table = 
-x. tip table = 
-xi. user table =
+i. Attribute table =10000        
+ii. Business table = 10000     
+iii. Category table =10000     
+iv. Checkin table =10000     
+v. elite_years table =10000     
+vi. friend table =10000      
+vii. hours table =10000      
+viii. photo table = 10000      
+ix. review table =10000       
+x. tip table =10000      
+xi. user table =10000    
 	
 
 
 2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
 
-i. Business =
-ii. Hours =
-iii. Category =
-iv. Attribute =
-v. Review =
-vi. Checkin = 
-vii. Photo =
-viii. Tip = 
-ix. User = 
-x. Friend = 
-xi. Elite_years =
+i. Business = 		100000	(id)     
+ii. Hours =  		1562	(business_id)     
+iii. Category =  	2643	(business_id)           
+iv. Attribute = 	1115	(business_id)   
+v. Review=			10000	(id)  			8090 (business_id)	9581 (user_id)
+vi. Checkin = 		493		(business_id)     
+vii. Photo = 		10000	(id)			6493 (busness_id)    
+viii. Tip = 		3979	(business_id)	537 (user_id)			  
+ix. User = 			10000    (id) 
+x. Friend = 		11		(user_id)     
+xi. Elite_years = 	2780	(user_id)      
 
 Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
 
@@ -47,11 +47,32 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 
 3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
 
-	Answer:
+	**Answer:** No.
 	
 	
-	SQL code used to arrive at answer:
-	
+	**SQL code used to arrive at answer:**
+	SELECT id, name, review_count, yelping_since, useful, funny, cool, fans, average_stars, compliment_hot, compliment_more, compliment_profile, compliment_cute, compliment_list, compliment_note, compliment_plain, compliment_cool, compliment_funny, compliment_writer, compliment_photos
+		FROM  user
+		WHERE 	id is null
+				OR name is null
+				OR review_count is null
+				OR yelping_since is null
+				OR useful is null
+				OR funny is null
+				OR cool is null
+				OR fans is null
+				OR average_stars is null
+				OR compliment_hot is null
+				OR compliment_more is null
+				OR compliment_profile is null
+				OR compliment_cute is null
+				OR compliment_list is null
+				OR compliment_note is null
+				OR compliment_plain is null
+			  	OR compliment_cool is null
+				OR compliment_funny is null
+				OR compliment_writer is null
+				OR compliment_photos is null
 	
 
 	
