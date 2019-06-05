@@ -1,0 +1,311 @@
+---
+title: "Final Project"
+author:  Eric Stewart
+date: "6/4/2019"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(statsr)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `gss`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load("Data.Rdata")
+```
+
+
+
+* * *
+
+## Part 1: Data
+
+The General Social Survey (GSS) is a sociological survey created and regularly collected since 1972 by the National Opinion Research Center at the University of Chicago. It is funded by the National Science Foundation. 
+
+The GSS aims to gather data on contemporary American society in order to monitor and explain trends and constants in attitudes, behaviors, and attributes; to examine the structure and functioning of society in general as well as the role played by relevant subgroups; to compare the United States to other societies in order to place American society in comparative perspective and develop cross-national models of human society; and to make high-quality data easily accessible to scholars, students, policy makers, and others, with minimal cost and waiting.
+
+The target population of the GSS is adults (18+) living in households in the United States. The GSS sample is drawn using an area probability design that randomly selects respondents in households across the United States to take part in the survey. Respondents that become part of the GSS sample are from a mix of urban, suburban, and rural geographic areas. Participation in the study is strictly voluntary. However, because only about a few thousand respondents are interviewed in the main study, every respondent selected is very important to the results.
+
+The survey is conducted face-to-face with an in-person interview by NORC at the University of Chicago. The survey was conducted every year from 1972 to 1994 (except in 1979, 1981, and 1992). Since 1994, it has been conducted every other year. The survey takes about 90 minutes to administer. As of 2014, 30 national samples with 59,599 respondents and 5,900+ variables have been collected.
+
+Given more than 59,000 respondents drawn from an 'area probaility design' that promotes randomness we can assume that the results can be generalized across the United States population.  There are concerns,however, that certain segments of the general U.S.polulation have been left off of the survey, for example the homeless that do not reside in a household, emancipated minors, undocumented residents, etc. 
+
+Fiinally with the assumption of randomness ofthe samplpling we will conclude that there is no causality within the data.
+
+* * *
+
+## Part 2: Research question
+The [Pew Research Center](https://www.pewforum.org/2015/04/02/buddhists/) predicts that Buddhism will contine to decline as a proportion of the world's population, brought on as a result of Buddhists’ aging population and *low fertility rate relative to other religious groups.*
+
+According to [Wikipedia,](https://en.wikipedia.org/wiki/Buddhism_in_the_United_States) in a 2007 Pew Research Center survey, at 0.7%, Buddhism was the third largest religion in the United States after Christianity (78.4%), no religion (10.3%) and Judaism (1.7%). In 2012 on the occasion of a visit from the spiritual leader, His Holiness the Dalai Lama, the University of California, San Diego estimated that there are 1.2 million Buddhist practitioners within the United States.
+
+I would like to investigate if in fact U.S. Buddhists have a proportionally lower fertility rate than that of the greater U.S. population. Therefor:
+
+**H0: There is no differnce between the fertility rate of self-proclaimed Buddihsts in the Unted States and that of the general U.S. population.**
+
+**In other terms where mu sub-b is equal to the Buddhist fetility rate, and mu sub-n is equal to the non-Buddhist fetility rate:**
+
+\[
+\mu_b - \mu_n = 0
+\]
+
+**Ha: There is a differnce between the fertility rate of self-proclaimed Buddihsts in the Unted States and that of the general U.S. population.**
+
+\[
+\mu_b - \mu_n != 0
+\]
+
+As a practicing Buddhist I had always understood that Buddism as a religion/philospohy was increasing in popularity as a proportion to the world's population.  The Pew Center is claiming differently, and I would like to use this opportunity to explore one of its central arguments that has led to that claim of the projected worldwide decline of Buddhism.
+
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+Firstly I'd like to know the distribution of self-proclaimed Buddhists in the survey data compared to the total respondents.  To do this I will use the $relig variable that contains 13 levels of factors of which 'Buddhism' is one of them.
+
+
+```{r explore_relig}
+
+table(gss$relig)
+
+```
+
+There are 130 self-proclaimed Buddists out of 57,061 observations.  How many NAs?
+
+**Comment:** Some thought was given to plotting $relig, but given Buddhisim's very small proportion to the overall sample, it seemed of little value.
+
+```{r NAs}
+
+sum(is.na(gss$relig))
+
+```
+
+
+233 NAs in the $relig variable. 
+
+If we remove the NAs (233) from the total obervations (57,061) we arrive at 56,828 respondants that have declared some sort to religious preference. Where Buddism makes up only 0.22% of U.S. respondents, this precentage is not terribly far off from the Pew Research Survey quoted above which claims that Buddism comprises 0.7% of the total U.S. population. 
+
+To understand fertilty rates we use the variable $child, that answers the survey question, "How many children have you ever had"?  We are assuming independance between the respondents, in other words no two respondents are claiming the same child. 
+
+We can graph the distribution of the number of children against the count of respondents.  As expected the graph is right-skewed as it would be impossible to have negative children.
+
+
+```{r explore_childs}
+
+ggplot(gss, aes(x=childs)) +
+ theme_bw()+
+  geom_bar(fill = "blue")+
+  labs(y="Number of Respondants", x="Number of Children",
+       title = "Children per Respondant")
+
+```
+
+Of note, there are 181 NAs that ggplot removed from the graph.  To check that:
+
+```{r NAs in $childs}
+
+sum(is.na(gss$childs))
+
+```
+
+Some quick summary statistics on the number of children per respondent...
+
+```{r mean_childs}
+summary(gss$childs, na.rm = TRUE)
+
+```
+
+
+It seems reasonable to compare the average number of children for respondents across the entire sample to the average number of children for Buddist respondents. We will do this by using inference for comparing two independent means.
+
+* * *
+
+## Part 4: Inference
+
+To restate the hypothesis from above:
+
+**H0: There is no differnce between the fertility rate of self-proclaimed Buddihsts in the Unted States and that of the general U.S. population.**
+
+**In other terms where mu sub b is equal to the Buddhist fetility rate, and mu sub-n is equal to the non-Buddhist fetility rate:**
+
+\[
+\mu_b - \mu_n = 0
+\]
+
+**Ha: There is a differnce between the fertility rate of self-proclaimed Buddihsts in the Unted States and that of the general U.S. population.**
+
+\[
+\mu_b - \mu_n != 0
+\]
+**Conditions:**
+1.  Independence, both within and between the groups.   **We are assuming independence both within and between the groups based on the sampling mechanisim ustilized by the researchers on a nationwide population.**
+
+2.  The 10% condition, that both N1 and N2 should be less than 10% of their respective populations.  **n1 is 130 self-reported Buddhists out of an estimated 1.2 million U.S Buddhists, and n2 is a population sample of 56,698 respondents out of a total estimated U.S. population of 327 million people.**  
+
+## Part 5: Method
+
+We will divide the smaple into Buddhists and Non-Buddhists, cleaning the data of NAs.  Next, examine the fertility rates between the two groups, looking at the sample means and using Inference for Comparing Two Sample Means to finally arrive at a conclusion. 
+
+Firstly, we need to divide the sample up into two groups: Buddhists (budd) and Non-Buddhists (non_budd): 
+
+```{r buddhists}
+
+budd <- filter(gss, relig == 'Buddhism') 
+  non_budd <- filter (gss, relig != 'Buddhism')
+
+```
+
+Checking the numbers, we have 130 observations of Buddhists, and 56,698 observations of Non-Buddhists, which is what we expect.
+
+Find the summary statistics for each of the two groups with respect to the number of children each respondent has claimed.
+
+First the Buddhists...
+
+```{r mean_budd_childs}
+
+summary(budd$childs, na.rm = TRUE)
+
+```
+
+Now the Non-Buddhists...
+
+```{r summary _non_budd_childs}
+
+summary(non_budd$childs, na.rm = TRUE)
+
+```
+
+
+Set-up the variables for the stndard deviations (s), the means (x), and sample sizes (n)
+```{r calculation_variables}
+
+#variables for the standard deviations
+s_budd <- sd(budd$childs)
+s_non_budd <- sd(non_budd$childs, na.rm = TRUE)
+
+#variables for the means
+x_budd <- 1.1
+x_non_budd <- 1.955
+
+#variables for the sample sizes
+n1 <- count(budd)
+n2 <- count(non_budd)
+
+```
+
+So far we have...
+
+\[
+\hat{x_1} = 1.1
+\]
+
+\[
+\hat{x_2} = 1.955
+\]
+
+\[
+{s_1} = 1.345
+\]
+
+\[
+{s_2} = 1.792
+\]
+
+\[
+{n_1} = 130
+\]
+
+\[
+{n_2} = 56,698
+\]
+
+
+
+For n we will use the smallest of the two samples or, n =  130. Thusly,  *df* = (n-1)    
+
+\[
+df=129
+\]
+
+The Standard Error:
+
+```{r standard-error}
+# Constructed the formula to find the Standaed Error(SE)
+
+SE <- sqrt((((x_budd)^2)/n1) + (((x_non_budd)^2)/n2))
+SE
+
+```
+
+\[
+SE = .0968
+\]
+
+
+The t-scrore:
+
+```{r t_score}
+
+# t-score Point Estimate divided by the Standard Error
+t <- (x_budd - x_non_budd) / SE
+t
+
+```
+
+
+\[
+t^* = -8.830354
+\]
+
+The Confidence Interval Formula:
+
+\[
+(\hat{x_1} - \hat{x_2}) \pm t^* {_d}{_f}SE {_(\hat{x_1} - \hat{x_2})}
+\]
+
+Using the values that we have derived yields a **Confidence Interval of (-0.003 , 0.002)**
+
+
+Find the associated p-value for a two-tailed test:
+
+```{r p_value}
+# use the pt() function to find to p-value
+
+p <- (1-pt(-8.830354, df=129) *2)
+p
+
+
+```
+
+\[
+p = 1
+\]
+
+## Part 5:Conclusion
+
+With a p-value of 1 we cannot reject the Null Hypothesis that there is no differnce between the fertility rate of self-proclaimed Buddihsts in the Unted States and the general U.S. population.  Therefor, while Pew Research Center's  claim that the projected relative decline of Buddhism worldwide is due, in part, to lower fertility rates amoung practitioners, this does not seem to be the case within the United States population.
+
+
+
+
+
+
+
+
+
