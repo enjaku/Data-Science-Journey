@@ -104,6 +104,175 @@ k is number of predictors (female_house, white)
 k can never be negitive so Adj R^2 is always < R^2
 choose models with higher Adj R^2 over others
 
+**Collinearity and Parsimony**
+
+Collinearity: Two predictor variables are said to be collinear when they are correlated with each other.     
+Parsimony:  The simplest, best model - Occam's razor     
+    The model that has the highest predictive power, however, has the lowest number of variables.     
+
+**Inference for MLR**    
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-54.045 -12.918   1.992  11.563  49.267 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 19.59241    9.21906   2.125   0.0341 *  
+mom_hsyes    5.09482    2.31450   2.201   0.0282 *  
+mom_iq       0.56147    0.06064   9.259   <2e-16 ***
+mom_workyes  2.53718    2.35067   1.079   0.2810    
+mom_age      0.21802    0.33074   0.659   0.5101    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01  0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 18.14 on 429 degrees of freedom
+Multiple R-squared:  0.2171,  Adjusted R-squared:  0.2098 
+F-statistic: 29.74 on 4 and 429 DF,  p-value: < 2.2e-16.     
+
+H0:  B1= B1= B1= Bk = 0     
+In other words none of the slopes of the variables are a significant predictor.     
+HA atleast 1 on the slopes is different than 0.      
+
+**F-statistic: 29.74 on 4 and 429 DF,  p-value: < 2.2e-16**     
+449 DF = n -k- 1     
+4 variables
+Since P is < 0.05, the model as a whole is significant and reject H).     
+
+QUESTION:  Is whether or not the mother went to high school a significant predictor of the cognitive test scores of children, given all other variables in the model?
+
+H0: B1(mom_hsyes) = 0     
+H1: B1 != 0    
+
+mom_hsyes    5.09482    2.31450   2.201   0.0282 * 
+Pr(>|t|) = "P-Value" = 0.0282   
+
+Just for kicks:
+- always use t-statistic in inference
+t statistics = (point estimate - null value) / SE    
+
+point estimate = b1 = slope = 5.09482    
+SE = n - k - 1:     
+     k is the number of predictors     
+     n is the sample size     
+
+For a single predictor the DF is n - 2 (1 for the slope and 1 for the intercept) So a Single Predictor is n - 2 or **n -1- -1**   
+
+ t = (5.09482 - 0)/ 2.315 (from output!!) = 2.201  
+
+ To get the p-value we need df:
+  434 - 4 -1 = 429 = df    
+
+  p = pt(2.201, df = 429, lower.tail = FALSE) *2     
+  0.028       
+  Reject H0 and say mom_hsyes is a significant predictor.     
+
+  **Confidenct Interval:**
+
+  point estimate +- margin of error:
+
+critical value =      
+curve 95% and each tail 2.5%
+df = 429     
+t score = **qt(0.025, df=429)**     
+-1.965   Take the allbackssolute value... 1.965    
+
+
+margin of error = t-statistic * standard error = 1.965 * 2.315    
+  =  4.548     
+
+so:
+point estimate = slope = 2.53 (from table)
+margin of error 4.548     
+
+  confidence interval = 2.53718 +- 4.548   (-2.01, 7.08) 
+
+  Interpretation:   we are 95% confident that, all else being equal, the model predicts that children whose moms worked during the first three years of their lives scored 2.09 points lower to 7.17 points higher than those whose moms did not work.
+
+  **MODEL SELECTION**    
+  Picking variables
+  "Backwards Elimination" of "Forward Selection":
+  Starting wtih full model and eliminating one-by-one, or visa versa.    
+  
+  We are going to use p-values and adjusted R^2   
+
+  1. start with full model    
+  2. Drop one variable at a time and record adj R^2   
+  3. Pick model with the **highest increase of adj R^2**
+  4. Repeat until none of the models yield an increase in adj R^@.    
+
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 19.59241    9.21906   2.125   0.0341 *  
+mom_hsyes    5.09482    2.31450   2.201   0.0282 *  
+mom_iq       0.56147    0.06064   9.259   <2e-16 ***
+mom_workyes  2.53718    2.35067   1.079   0.2810    
+mom_age      0.21802    0.33074   0.659   0.5101    
+---
+
+Residual standard error: 18.14 on 429 degrees of freedom
+Multiple R-squared:  0.2171,  **Adjusted R-squared:  0.2098** 
+F-statistic: 29.74 on 4 and 429 DF,  p-value: < 2.2e-16
+
+Full model has **Adjusted R-squared:  0.2098**
+
+using p-value for backwards...
+1. start with full model    
+2. drop the variable with the highest p-value and refit a smaller model.    
+3. repeat until all variables remaining are significant.     
+
+**If you have a categorical variable with multiple levels, you cannot drop part, some of the levels of that variable and keep others.**
+
+So the p-value and adj R^2 will yield different models.  Which to use?
+
+p-value  - If we want to know which predictors are statistically significant.         
+ - more common approach.
+ - depends on arbitrary 5% significance level.     
+adj R^2 - More reliable predictions.
+
+FORWARD SELECTION  
+
+ adj R^2     
+1. Start with a single predictor of regressions response v. each explanatory variable.    
+2. Pick a model with highest adj R^2  
+3. Add remaining variables one at a time and pick model with highest adj R^2        
+4. Repeat until the addition of any of the remaining variables deoes not result in a higher adj R^2,
+
+
+p-value
+1. Start with single predictor regressions of response v. explanatory variable .    
+2. Pick the variable with the **lowest significant p-value**    
+3. Add the remaining variables one at a time to the existing model, and pick the variable with the lowest sig. p-value.  
+4. repeat until any of the remaining variables do not have a significant p-value.  
+
+
+**DIAGNOSTICS FOR MLR**
+Conditions:
+linear between x and y
+residuals nearly nornmal distriburtion of residuals
+constant variability of residuals
+indepedance of residuals  
+
+ plot (cog_final$risduals ~ cognitive$mom_iq)
+
+ qqnorm(cog_full$residuals)
+ hist(cog_full$residuals)
+ qqline(cog_full$residuals)
+ 
+ instead of cog_full need to use output from model. cog_final?
+
+ plot(cog_final$residuals ~ cog_final$residuals)
+ plot(abs(cog_final$residuals) ~ cog_final$fitted)
+
+ plot(cog_final$residuals)
+
+
+
+
+
+
+
+
+
 
 
 
