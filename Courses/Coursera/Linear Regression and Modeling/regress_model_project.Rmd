@@ -176,6 +176,24 @@ Aud_Score
 
 The outputed average Audience Score is 62.39, which is equal to the stated mean of the variable  'audience_score from above (summary(movies$audience_score).
 
+
+Let's choose a movie to run the model against.  For example, if we look at the 2018 movie, Solo, directed by Ron Howard.
+
+
+runtime:  135     
+critics_rating:  3     
+imbd_rating: 7.0     
+
+```{r}
+Solo <- -23.88 + (135 * -0.054) + (3 * -2.792) + 
+  (7 * 15.141)
+
+Solo
+```
+
+Prediction Conclusion:  Solo is a slightly,  above average 'popular' movie.  
+
+
 * * *
 
 ## Part 6: Conclusion
