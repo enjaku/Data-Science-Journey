@@ -1,0 +1,191 @@
+---
+title: "Modeling and prediction for movies"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+    author: Eric Stewart
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(statsr)
+library(stats)
+library(corrplot)
+library(imputeTS)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `movies`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load('movies.Rdata')
+```
+
+* * *
+
+## Part 1: Data
+The data set is comprised of 651 randomly sampled movies produced and released before 2016.  Each movie is accompanied by 32 variables or 'attributes'.  The task will be to understand, through linear regression modeling,  which attributes make a movie popular.
+
+
+* * *
+
+## Part 2: Research question
+
+Given the 32 'attributes' what combination yields the highest predictive power of movie popularity?
+
+* * *
+
+## Part 3: Exploratory data analysis
+```{r}
+str(movies)
+
+```
+
+Out of the 32 varibles, 'imdb_url' and 'rt_url' are charaacter strings of the movies'
+websites on IMDB and RT.  Without doing any webscrapping, which is outside of the 
+scope of this course, these two variables do not hold any predictive power, and 
+will be removed from the dataset.
+
+Similarly, 'director', 'actor1' , 'actor2', 'actor3', 'actor4', and 'actor5' are also
+character strings, and while particular actors, actresses and directors likely lead 
+to a movie's popularity we will remove these variables as well for the sake of this project.
+
+
+```{r remove_variables}
+# Remove unwanted variables from the data and create a new dataframe with 24 variables called 'movies_small'
+movies_small <- movies[ -c(1, 25:32)]
+```
+
+Similarly, we are going to remove additional variables that are unlikely to have an effect on popularity.  These are: 'studio', 'thtr_rel_year', 'thtr_rel_day', 'dvd_rel_year', 'dvd_rel_month',  'dvd_rel_day'.  We left 'thtr_rel_month' in the dataset to account for possible seasonaility of movie release dates. 
+
+```{r remove_additional_variables}
+
+# Remove additionally unwanted variables from the data 
+movies_small <- movies_small[ -c(5,6,8:11)]
+str(movies_small)
+```
+
+Some data wrangling is neccessary.
+
+The 'thtr_rel_month' variable, which indicates the month that  movie was released in the theaters, should be a catogorical variable, e.g., a Factor and not a Numeric.
+
+```{r change_to_factor} 
+# Change 'thtr_rel_month'to a factor
+movies_small$thtr_rel_month <- factor(movies_small$thtr_rel_month)
+```
+
+
+The variable 'critics_rating' is a Factor with three levels, but we can consider it a Numeric
+
+```{r}
+movies_small$critics_rating <- as.numeric(movies_small$critics_rating)
+```
+
+
+The variable 'runtime' has a singl NA.  This is replaced with the mean of variable, 105.
+
+```{r}
+movies_small$runtime <- na_replace(movies_small$runtime, fill = 105)
+sum(is.na(movies_small$runtime))
+```
+
+This yields a smaller dataset with now only 17 variables; all likely to have some degree of influence on a movie's popularity.
+
+```{r}
+str(movies_small)
+```
+
+To address the research question of popularity we need a proxy measurement of 'popularity'.   We will use 'audience_score', a numeric from RT, as that measure.  There is an 'audience-rating' variable, also from RT, but it is a Factor with only 2-levels and thus not a good proxy for 'popularity'.
+
+```{r}
+summary(movies$audience_score)
+```
+
+We can see from the output that the 'audience_score', now our proxy for popularity, is likely an interger value from 1 to 100, with a mean of 62.36, and a 3rd quartile of 80.00.
+
+Of the 17 variables in the dataset' movies_small', 11 of them are catogorical variables, i.e. Factors.  It is possible to use a seperate coding scheme prior to the regression to account for  catogorical variables but for the remainder of this analysis we will set aside the catogorical variables and concentrate on using only quantitative variables.
+
+
+```{r}
+
+mov_vars <- movies_small[c( 3, 6:9, 11)]
+res <- cor(mov_vars)
+round(res, 2)
+```
+
+Using the function corrplot() from the same named library we can examine the variable correlations.
+```{r}
+library(corrplot)
+corrplot(res, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. In the right side of the correlogram, the legend color shows the correlation coefficients and the corresponding colors.
+
+The correlation between 'audience_score' and 'imdb_rating' is the strongest at .86 as also indicated in the correlation output above.   The weakest correlation is between 'critics_rating' and 'runtime'.
+
+* * *
+
+## Part 4: Modeling
+
+Running the full model....
+
+```{r}
+movie_pop = lm(audience_score ~ runtime + critics_rating + imdb_rating  + imdb_num_votes + critics_score, data = movies_small)
+
+```
+The full model with 4 variables yields an Adjusted R-Squared of 0.7561 and a p-value: < 2.2e-16
+
+
+* * *
+
+## Part 5: Prediction
+
+Utilizing Backwards Elinination using Adjusted R-Squared...
+
+By removing 'imdb_num_votes' we can increase the Adjusted R-Squared from 0.7561 to 0.7565.
+Then, by removing 'critics_score' we increase Adjusted R-Square again to 0.7568.
+
+```{r}
+movie_pop = lm(audience_score ~ runtime + critics_rating + imdb_rating, data = movies_small)
+summary(movie_pop)
+```
+
+The rergression equation to predict and Audience Score is:
+
+**Audience Score = -23.88 + runtime(-0.054) + critics_rating(-2.792) + imdb_rating(15.141)**
+
+We can confirm the validity of this equation by inserting the mean of each numerical variable into the equation and outputing the average Audience Score.  
+
+```{r}
+Aud_Score <- -23.88 + (mean(movies_small$runtime) * -0.054) + 
+  (mean(movies_small$critics_rating) * -2.792) + 
+  (mean(movies_small$imdb_rating) * 15.141)
+
+Aud_Score
+```
+
+The outputed average Audience Score is 62.39, which is equal to the stated mean of the variable  'audience_score from above (summary(movies$audience_score).
+
+* * *
+
+## Part 6: Conclusion
+Restating the research question, 'given the 32 'attributes' what combination yields the highest predictive power of movie popularity?.  
+
+We can say that a combination 'runtime', 'critics_rating' and 'imdb_rating' can explain 75.68% of the variability of the 'audience_score', the variable that we are using as our proxy for movie popularity.
+
+
+
+
+
+
+
